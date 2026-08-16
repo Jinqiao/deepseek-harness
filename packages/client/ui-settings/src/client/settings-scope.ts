@@ -248,7 +248,7 @@ export class SettingsScopeBinder extends Service {
     const controller = new SettingsScopeController<T>(
       connection.api,
       spec,
-      connection.isLoopback ? 'host' : 'memory',
+      'host',
     )
     ctx.effect(() => {
       const refresh = (namespace?: string): void => {
