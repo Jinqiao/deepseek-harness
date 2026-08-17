@@ -2969,6 +2969,22 @@ export interface Config {
 
 来源：[`packages/web/web-search-exa/src/index.ts:38`](../packages/web/web-search-exa/src/index.ts)
 
+<a id="deepseek-aidsh-web-search-local"></a>
+
+## `@deepseek-ai/dsh-web-search-local`
+
+需要：`web`
+
+```ts config-catalog
+/** Plugin config (all optional — `apply` fills constant defaults). */
+export interface Config {
+  /** Endpoint base; `/grounding/search/clean` is appended. Defaults to the local default. */
+  baseURL?: string
+}
+```
+
+来源：[`packages/web/web-search-local/src/index.ts:31`](../packages/web/web-search-local/src/index.ts)
+
 <a id="deepseek-aidsh-web-search-perplexity"></a>
 
 ## `@deepseek-ai/dsh-web-search-perplexity`

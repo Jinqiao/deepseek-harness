@@ -530,6 +530,15 @@
         "tests/**/*.ts"
       ]
     },
+    "packages/web/web-search-local": {
+      "entry": [
+        "tests/**/*.spec.ts"
+      ],
+      "project": [
+        "src/**/*.ts",
+        "tests/**/*.ts"
+      ]
+    },
     "packages/web/web-search-perplexity": {
       "entry": [
         "tests/**/*.spec.ts",
