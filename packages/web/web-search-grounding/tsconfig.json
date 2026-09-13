@@ -30,13 +30,7 @@
       "path": "../../core/session"
     },
     {
-      "path": "../../credentials/credentials"
-    },
-    {
       "path": "../../settings/settings"
-    },
-    {
-      "path": "../../runtime-diagnostics/invariants"
     }
   ]
 }

@@ -9,7 +9,7 @@
 import type { Context } from '@deepseek-ai/cordis'
 import z from '@deepseek-ai/schemastery'
 import type {} from '@deepseek-ai/dsh-agent'
-import { installSettingsSection, settingsNamespace } from '@deepseek-ai/dsh-settings'
+import type {} from '@deepseek-ai/dsh-settings'
 import { launchEnvironmentOf } from '@deepseek-ai/dsh-launch-environment'
 import type {} from '@deepseek-ai/dsh-session'
 import type {} from '@deepseek-ai/dsh-web'
@@ -40,7 +40,7 @@ export const inject = ['web']
 const BASE_URL_ENV = 'GROUNDING_SEARCH_BASE_URL'
 
 /** Settings namespace carrying this provider's endpoint and output budget. */
-export const WEB_SEARCH_GROUNDING_SETTINGS_NAMESPACE = settingsNamespace('web-search-grounding')
+export const WEB_SEARCH_GROUNDING_SETTINGS_NAMESPACE = 'web-search-grounding'
 
 /** Plugin config (all optional — `apply` fills defaults). */
 export interface Config {
@@ -81,13 +81,15 @@ function resolveOptions(ctx: Context, config: Config): GroundingSearchProviderOp
 /** Register the grounding search provider with `ctx.web`. */
 export function apply(ctx: Context, config: Config): void {
   let current: () => Config = () => config
-  installSettingsSection(ctx, WEB_SEARCH_GROUNDING_SETTINGS_NAMESPACE, Config, config, {
-    setSource: (source) => {
-      current = source
-    },
-    // The registration carries no resolved value: the provider projects the
-    // section per search, so a committed change needs no re-registration.
-    onChange: () => {},
+  ctx.inject(['settings'], (settingsCtx) => {
+    settingsCtx.settings.installSection(ctx, WEB_SEARCH_GROUNDING_SETTINGS_NAMESPACE, Config, config, {
+      setSource: (source) => {
+        current = source
+      },
+      // The registration carries no resolved value: the provider projects the
+      // section per search, so a committed change needs no re-registration.
+      onChange: () => {},
+    })
   })
   ctx.web.registerSearchProvider(new GroundingSearchProvider(() => resolveOptions(ctx, current())))
 }
