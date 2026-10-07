@@ -1,6 +1,70 @@
-# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. Both languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
+# Bilingual-pair consistency record for README.md (docs/i18n/README.md): per heading
+# section, a hash of its English and Chinese blocks outside code blocks and generated regions.
+# After editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write packages/web/web-search-grounding/README.md
-README.md: 2d9058eec760bc3da8053abdead9a47ad49fbe26
-README.zh.md: 1cd4955db422944b215a744bb57fafe550f3e1ec
+/:
+  en: f2f8476860b2ac81
+  zh: 0abfb8b20996b11c
+/deepseek-ai-dsh-web-search-grounding:
+  en: a49bc26a3749ff44
+  zh: 37ab86bdb03759e1
+/deepseek-ai-dsh-web-search-grounding/summary:
+  en: acf37857f9a65df8
+  zh: 5e622d6d57e03a15
+/deepseek-ai-dsh-web-search-grounding/table-of-contents:
+  en: b563e4ec4727d0de
+  zh: c81186319e2c41b4
+/deepseek-ai-dsh-web-search-grounding/use-this-package:
+  en: 385feea0086ba85a
+  zh: 59085e0f3cdfb73a
+/deepseek-ai-dsh-web-search-grounding/use-this-package/when-to-choose-it:
+  en: 85901f922501f115
+  zh: a22d734347a4ab5a
+/deepseek-ai-dsh-web-search-grounding/use-this-package/minimal-configuration:
+  en: 782016f4b3dd3f9a
+  zh: d252a8ddec5ad34d
+/deepseek-ai-dsh-web-search-grounding/use-this-package/what-a-search-returns:
+  en: 2249a9162a041ff7
+  zh: 57cec8be45eba46b
+/deepseek-ai-dsh-web-search-grounding/use-this-package/failures-and-recovery:
+  en: a5e3582767dca362
+  zh: 803e26735b35fcf0
+/deepseek-ai-dsh-web-search-grounding/understand-the-implementation:
+  en: 9842c69ad3636bb3
+  zh: d4088dacb23d313e
+/deepseek-ai-dsh-web-search-grounding/understand-the-implementation/design-philosophy:
+  en: 10980713ae7b8c4b
+  zh: 98c3c03ac71b1271
+/deepseek-ai-dsh-web-search-grounding/understand-the-implementation/source-map:
+  en: 869485663689a0b9
+  zh: 6ca3b8bfe7ba4683
+/deepseek-ai-dsh-web-search-grounding/understand-the-implementation/request-flow:
+  en: 18ca7c4f3b235b4b
+  zh: a0dd5ccf3d390d6f
+/deepseek-ai-dsh-web-search-grounding/further-exploration:
+  en: 3bf0fea8fe86169a
+  zh: e5c9345084a14c45
+/deepseek-ai-dsh-web-search-grounding/model-experience:
+  en: 215e7ba838619b7b
+  zh: 215e7ba838619b7b
+/deepseek-ai-dsh-web-search-grounding/model-experience/conversation-tool-result:
+  en: 28975074795bc523
+  zh: 28975074795bc523
+/deepseek-ai-dsh-web-search-grounding/model-experience/conversation-tool-result/what-the-model-sees:
+  en: 4438434ed0123dc2
+  zh: 6ba756ec5ac87977
+/deepseek-ai-dsh-web-search-grounding/model-experience/conversation-tool-result/token-effect:
+  en: bce34fedb9cae15a
+  zh: 4e2aedddb856abed
+/deepseek-ai-dsh-web-search-grounding/model-experience/conversation-tool-result/kv-cache-effect:
+  en: f5d5f97a153f7c70
+  zh: c0232d96934f4081
+/deepseek-ai-dsh-web-search-grounding/known-limitations-and-deferred-work:
+  en: 2d4e7becee488ffe
+  zh: 15a20553c7515c9d
+/deepseek-ai-dsh-web-search-grounding/known-limitations-and-deferred-work/dev-note:
+  en: 7f775cc79dbce94b
+  zh: e34d21f0d2b4c744
+/deepseek-ai-dsh-web-search-grounding/known-limitations-and-deferred-work/dev-note/future-streaming-answer:
+  en: 93bebd5dac5f1bde
+  zh: a90e6747a96a531f

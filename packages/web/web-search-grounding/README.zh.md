@@ -32,7 +32,7 @@ kind: "package-reference"
 
 ### Minimal configuration
 
-加载 web 服务与 provider；路由器 base URL 默认为本地端点。base URL 依次从 Settings section、`$GROUNDING_SEARCH_BASE_URL`、默认值解析。
+加载 web 服务与 provider；路由器 base URL 默认为本地端点。base URL 依次从实时配置、`$GROUNDING_SEARCH_BASE_URL`、默认值解析。
 
 ```yaml
 - name: '@deepseek-ai/dsh-web'
@@ -49,7 +49,7 @@ kind: "package-reference"
 | `maxOutputTokens` | `256` | 路由器生成答案的最大输出 token 数（1–8192） |
 | `timeoutMs` | `30000` | 单次搜索的网络超时（毫秒） |
 
-生成的[配置目录](../../../docs/config-catalog.zh.md#deepseek-aidsh-web-search-grounding)是每个可接受字段及其 JSDoc 的权威来源。上面的条目是 provider Settings section 的 base 层；其上的用户层会在下一次搜索时生效，因为 provider 每次调用都投影 section，而不是在注册时捕获。
+生成的[配置目录](../../../docs/config-catalog.zh.md#deepseek-aidsh-web-search-grounding)是每个可接受字段及其 JSDoc 的权威来源。每个字段都是实时配置引用；已提交的变更会在下一次搜索生效，因为 provider 每次调用都读取该引用，而不是在注册时捕获。
 
 ### What a search returns
 
@@ -74,19 +74,19 @@ kind: "package-reference"
 provider 建立在两个承诺之上：
 
 - **路由器持有凭据与检索。** provider 只向 `/grounding/search/clean` 发送 query 与输出预算。不消耗模型 turn，密钥不离开机器：Gemini 凭据只存在于 llm-router 服务中。
-- **按搜索投影选项。** provider 每次调用都解析当前 Settings section，因此已提交的设置变更无需重新注册即可在下次搜索生效，且两次搜索之间的设置写入不会混用两个 section。
+- **按搜索投影选项。** provider 每次调用都读取实时配置引用，因此已提交的配置变更无需重新注册即可在下次搜索生效，且两次搜索之间的配置写入不会混用两个 section。
 
 ### Source map
 
 | File | Role |
 |---|---|
-| [`src/index.ts`](src/index.ts) | 插件入口：config schema、Settings section 安装、按搜索的选项投影 |
+| [`src/index.ts`](src/index.ts) | 插件入口：config schema、按搜索的选项投影 |
 | [`src/provider.ts`](src/provider.ts) | `GroundingSearchProvider`：HTTP 分发、abort 处理、响应映射 |
 | — | 不发布运行时 invariant companion；请求是不消耗模型 turn 的普通 HTTP POST，因此没有可与后续权威事件关联的无秘密信封。 |
 
 ### Request flow
 
-每次搜索将当前 Settings section 快照为 provider 选项，在 base URL 后追加 `/grounding/search/clean`，并以 abort 与超时组合信号 POST `{ query, maxOutputTokens }`。响应的 `answer` 成为 `content`，`sources[]` 成为引用列表，seam 在返回路径上执行请求的 source 上限。
+每次搜索将当前配置引用读入 provider 选项，在 base URL 后追加 `/grounding/search/clean`，并以 abort 与超时组合信号 POST `{ query, maxOutputTokens }`。响应的 `answer` 成为 `content`，`sources[]` 成为引用列表，seam 在返回路径上执行请求的 source 上限。
 
 </details>
 

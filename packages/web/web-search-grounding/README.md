@@ -32,7 +32,7 @@ Choose this backend when a deployment runs the llm-router service locally and wa
 
 ### Minimal configuration
 
-Load the web service and the provider; the router base URL defaults to the local endpoint. The base URL resolves from the Settings section, then `$GROUNDING_SEARCH_BASE_URL`, then the default.
+Load the web service and the provider; the router base URL defaults to the local endpoint. The base URL resolves from the live config, then `$GROUNDING_SEARCH_BASE_URL`, then the default.
 
 ```yaml
 - name: '@deepseek-ai/dsh-web'
@@ -49,7 +49,7 @@ Load the web service and the provider; the router base URL defaults to the local
 | `maxOutputTokens` | `256` | Max output tokens for the router's generated answer (1–8192) |
 | `timeoutMs` | `30000` | Per-search network timeout in milliseconds |
 
-The generated [configuration catalog](../../../docs/config-catalog.md#deepseek-aidsh-web-search-grounding) is the exhaustive source for every accepted field and its JSDoc. The entry above is the base layer of the provider's Settings section; a user layer over it reaches the next search, because the provider projects the section per call rather than capturing it at registration.
+The generated [configuration catalog](../../../docs/config-catalog.md#deepseek-aidsh-web-search-grounding) is the exhaustive source for every accepted field and its JSDoc. Each field is a live config reference; a committed change reaches the next search, because the provider reads the reference per call rather than capturing it at registration.
 
 ### What a search returns
 
@@ -74,19 +74,19 @@ This section explains the design decisions behind the provider; the observable b
 The provider is built on two commitments:
 
 - **The router owns the credential and the retrieval.** The provider sends only the query and the output budget to `/grounding/search/clean`. No model turn is spent and no key leaves the machine: the Gemini credential lives exclusively in the llm-router service.
-- **Per-search option projection.** The provider resolves the current Settings section per call, so a committed settings change reaches the next search without re-registration, and a settings write between searches never mixes two sections.
+- **Per-search option projection.** The provider reads the live config references per call, so a committed config change reaches the next search without re-registration, and a config write between searches never mixes two sections.
 
 ### Source map
 
 | File | Role |
 |---|---|
-| [`src/index.ts`](src/index.ts) | Plugin entry: config schema, Settings section installation, per-search option projection |
+| [`src/index.ts`](src/index.ts) | Plugin entry: config schema, per-search option projection |
 | [`src/provider.ts`](src/provider.ts) | The `GroundingSearchProvider`: HTTP dispatch, abort handling, response mapping |
 | — | No runtime invariant companion is published; the request is a plain HTTP POST with no model turn, so there is no secret-free envelope to relate to a later authoritative event. |
 
 ### Request flow
 
-Each search snapshots the current Settings section into provider options, appends `/grounding/search/clean` to the base URL, and POSTs `{ query, maxOutputTokens }` with an abort-and-timeout composite signal. The response's `answer` becomes `content`, `sources[]` becomes the citation list, and the seam enforces the requested source bound on the way back.
+Each search reads the current config references into provider options, appends `/grounding/search/clean` to the base URL, and POSTs `{ query, maxOutputTokens }` with an abort-and-timeout composite signal. The response's `answer` becomes `content`, `sources[]` becomes the citation list, and the seam enforces the requested source bound on the way back.
 
 </details>
 
